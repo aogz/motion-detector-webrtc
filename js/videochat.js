@@ -79,9 +79,14 @@ function startWebRTC(isOfferer) {
     }
   };
 
+  let videoConstraint = true;
+  if (/android/i.test(navigator.userAgent)) {
+    videoConstraint = {facingMode: {exact: "environment"}};
+  }
+
   navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: {facingMode: {exact: "environment"}},
+    video: videoConstraint,
   }).then(stream => {
     // Display your local video in #localVideo element
     localVideo.srcObject = stream;
