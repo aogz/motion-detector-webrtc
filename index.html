@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    html, body {
+      height:100%;
+    }
+
+    body {
+      background: #333;
+      color: #EEE;
+      margin: 0;
+      padding: 0;
+    }
+
+    #remote-wrapper {
+      position: fixed;
+      top: 0; 
+      right: 0; 
+      bottom: 0; 
+      left: 0;
+      overflow: hidden;
+    }
+
+    #remote-wrapper >  #remoteVideo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    video {
+      border-radius: 10px;
+    }
+
+    #localVideo {
+      max-width: 200px;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+    }
+
+    #motion-score {
+      font-size: 48px;
+      color: white;
+      text-shadow: 2px 2px 4px #000000;
+      font-family: "Open Sans";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="motion-score"></div>
+  <video id="localVideo" autoplay muted></video>
+  <div id="remote-wrapper">
+    <video id="remoteVideo" autoplay></video>
+  </div>
+  
+  <script src="js/diff-engine.js"></script>
+  <script src="js/videochat.js"></script>
+  <script src="js/motion-detector.js"></script>
+</body>
+</html>
