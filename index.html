@@ -25,7 +25,7 @@
       overflow: hidden;
     }
 
-    #remote-wrapper >  #remoteVideo {
+    #remote-wrapper >  #remote-video {
       position: absolute;
       top: 0;
       left: 0;
@@ -38,7 +38,7 @@
       border-radius: 10px;
     }
 
-    #localVideo {
+    #local-video {
       max-width: 200px;
       position: absolute;
       bottom: 24px;
@@ -60,13 +60,13 @@
 </head>
 <body>
   <div id="motion-score"></div>
-  <video id="localVideo" autoplay muted></video>
+  <video id="local-video" autoplay muted></video>
   <div id="remote-wrapper">
-    <video id="remoteVideo" autoplay></video>
+    <video id="remote-video" autoplay></video>
   </div>
   
   <script src="js/diff-engine.js"></script>
-  <script src="js/videochat.js"></script>
   <script src="js/motion-detector.js"></script>
+  <script src="js/videochat.js"></script>
 </body>
 </html>

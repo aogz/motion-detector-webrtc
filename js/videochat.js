@@ -8,6 +8,9 @@ const roomHash = "kitchen"
 // TODO: Replace with your own channel ID
 const drone = new ScaleDrone('DMncCUNUstMtxe79');
 
+const localVideo = document.getElementById("local-video")
+const remoteVideo = document.getElementById("remote-video")
+
 // Room name needs to be prefixed with 'observable-'
 const roomName = 'observable-' + roomHash;
 const configuration = {
@@ -76,23 +79,37 @@ function startWebRTC(isOfferer) {
     const stream = event.streams[0];
     if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
       remoteVideo.srcObject = stream;
+      DiffCamEngine.init({
+        video: remoteVideo,
+        initSuccessCallback: initSuccess,
+        initErrorCallback: initError,
+        captureCallback: capture,
+        pixelDiffThreshold: params.pixel || 16,
+        scoreThreshold: params.score || 8,
+      });
     }
   };
 
-  let videoConstraint = true;
-  // if (/android/i.test(navigator.userAgent)) {
-  //   videoConstraint = {facingMode: {exact: "environment"}};
-  // }
+  navigator.mediaDevices.enumerateDevices().then((devices) => {
+      const availableVideoDevices = [];
+      devices.forEach((device) => {
+        console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+        if (device.kind === "videoinput") {
+          availableVideoDevices.push(device.deviceId)
+        }
+      });
 
-  navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: videoConstraint,
-  }).then(stream => {
-    // Display your local video in #localVideo element
-    localVideo.srcObject = stream;
-    // Add your stream to be sent to the conneting peer
-    stream.getTracks().forEach(track => pc.addTrack(track, stream));
-  }, onError);
+      navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {optional: [{sourceId: availableVideoDevices[availableVideoDevices.length - 1]}]},
+      }).then(stream => {
+        localVideo.srcObject = stream;
+        // Add your stream to be sent to the conneting peer
+        stream.getTracks().forEach(track => pc.addTrack(track, stream));
+      }, onError);
+  }).catch((err) => {
+    console.error(`${err.name}: ${err.message}`);
+  });
 
   // Listen to signaling data from Scaledrone
   room.on('data', (message, client) => {

@@ -81,10 +81,14 @@ var DiffCamEngine = (function() {
 			audio: false,
 			video: { width: captureWidth, height: captureHeight }
 		};
-
-		navigator.mediaDevices.getUserMedia(constraints)
-			.then(initSuccess)
-			.catch(initError);
+        
+        const stream = video.captureStream();
+        if (stream) {
+            initSuccess(stream)
+        } else {
+            navigator.mediaDevices.getUserMedia(constraints).then(initSuccess).catch(initError);
+        }
+		
 	}
 
 	function initSuccess(requestedStream) {
