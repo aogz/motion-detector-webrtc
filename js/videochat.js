@@ -80,9 +80,9 @@ function startWebRTC(isOfferer) {
   };
 
   let videoConstraint = true;
-  if (/android/i.test(navigator.userAgent)) {
-    videoConstraint = {facingMode: {exact: "environment"}};
-  }
+  // if (/android/i.test(navigator.userAgent)) {
+  //   videoConstraint = {facingMode: {exact: "environment"}};
+  // }
 
   navigator.mediaDevices.getUserMedia({
     audio: false,
